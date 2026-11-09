@@ -19,8 +19,8 @@
 
   function update() {
     frame = 0;
-    const image = document.querySelector<HTMLElement>('#banner img');
-    if (image) {
+    const media = document.querySelectorAll<HTMLElement>('#banner img, #banner video');
+    for (const image of media) {
       const amount = enabled() && desktop.matches
         ? Math.min(scrollY * (root.dataset.motion === 'standard' ? 0.1 : 0.06), 28) : 0;
       image.style.translate = `0 ${amount}px`;

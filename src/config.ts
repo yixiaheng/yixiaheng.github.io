@@ -4,7 +4,7 @@ export const homeConfig = settings;
 export const siteConfig: SiteConfig = {
   title: settings.title, subtitle: settings.subtitle, lang: 'zh_CN',
   themeColor: { hue: settings.hue, fixed: false },
-  banner: { enable: settings.bannerEnabled, src: settings.banner, position: 'center', credit: { enable: false, text: '' } },
+  banner: { enable: settings.bannerEnabled, src: settings.banner, video: settings.bannerVideo, position: 'center', credit: { enable: false, text: '' } },
   toc: { enable: true, depth: 3 }, favicon: [],
 };
 export const navBarConfig: NavBarConfig = { links: settings.navigation };

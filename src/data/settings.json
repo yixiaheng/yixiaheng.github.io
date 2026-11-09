@@ -4,6 +4,8 @@
   "bio": "本人计算机专业大二在读; \nUnity新人开发者;\n不怎么喜欢分享知识的小白;\n以后不想当哑巴的程序员；",
   "name": "HYX_HYD",
   "banner": "/images/uploads/preview2.gif",
+  "bannerVideo": "/images/uploads/11-9-1-.mp4",
+  "music": { "enabled": true, "src": "", "title": "背景音乐" },
   "heroKicker": "记录思考的褶皱 / 收集散落的光影 / 存放未竟的野心。",
   "background": {
     "enabled": true,

@@ -61,8 +61,26 @@
             {
               "name": "banner",
               "label": "首页横幅图片",
-              "hint": "首页顶部的独立大图，与页面背景分别设置。首页滚动到顶部时只展示这张图片。",
+              "hint": "与全页背景独立。设置视频后，此图片作为加载和无法播放时的备用画面，建议使用静态 JPG/WebP 图片。",
               "widget": "image"
+            },
+            {
+              "name": "bannerVideo",
+              "label": "横幅视频（MP4）",
+              "widget": "file",
+              "required": false,
+              "hint": "上传或选择 MP4，优先作为横幅静音循环播放；清空后恢复图片。推荐 H.264 编码、1080p、短循环视频。系统开启减少动态效果时显示备用图片。",
+              "media_library": { "config": { "multiple": false } }
+            },
+            {
+              "name": "music",
+              "label": "背景音乐",
+              "widget": "object",
+              "fields": [
+                { "name": "enabled", "label": "显示音乐按钮", "widget": "boolean", "default": true },
+                { "name": "src", "label": "音乐文件（MP3）", "widget": "file", "required": false },
+                { "name": "title", "label": "音乐名称", "widget": "string", "default": "背景音乐" }
+              ]
             },
             {
               "name": "hue",

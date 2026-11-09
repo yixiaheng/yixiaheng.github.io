@@ -1,0 +1,42 @@
+---
+import { siteConfig } from '../config';
+import ImageWrapper from './misc/ImageWrapper.astro';
+---
+<div id="banner" class="relative h-full transition duration-700 opacity-0 scale-105 overflow-hidden">
+  <ImageWrapper class="h-full w-full" src={siteConfig.banner.src} alt="博客横幅" position={siteConfig.banner.position} />
+  {siteConfig.banner.video && <video id="banner-video" class="absolute inset-0 h-full w-full object-cover" muted loop playsinline preload="none" data-src={siteConfig.banner.video} aria-hidden="true" />}
+</div>
+<style>
+  video { opacity: 0; transition: opacity .6s ease; pointer-events: none; }
+  video[data-playing] { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { video { transition: none; } }
+</style>
+<script>
+  const video = document.querySelector<HTMLVideoElement>('#banner-video');
+  if (video && !video.dataset.bound) {
+    video.dataset.bound = 'true';
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let visible = true;
+    const allowed = () => visible && !document.hidden && !reduced.matches && document.documentElement.dataset.motion !== 'off';
+    function sync() {
+      if (!video) return;
+      if (!allowed()) {
+        video.pause();
+        if (reduced.matches) video.removeAttribute('data-playing');
+        return;
+      }
+      if (!video.src) video.src = video.dataset.src || '';
+      video.muted = true;
+      void video.play().catch(() => video.removeAttribute('data-playing'));
+    }
+    video.addEventListener('playing', () => {
+      if (allowed()) video.setAttribute('data-playing', '');
+      else sync();
+    });
+    video.addEventListener('error', () => video.removeAttribute('data-playing'));
+    new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); }).observe(video);
+    reduced.addEventListener('change', sync);
+    document.addEventListener('visibilitychange', sync);
+    sync();
+  }
+</script>

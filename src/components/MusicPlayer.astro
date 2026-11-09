@@ -1,0 +1,57 @@
+---
+import { homeConfig } from '../config';
+const music = homeConfig.music;
+---
+{music?.enabled && <div id="music-player">
+  <button id="music-toggle" type="button" class="btn-regular rounded-full" aria-label={music.src ? `播放：${music.title}` : '暂未设置音乐'} title={music.src ? `播放：${music.title}` : '暂未设置音乐'} aria-pressed="false" disabled={!music.src}>
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M14 7v8a2 2 0 1 1-2-2h2M14 7l3 1"/></svg>
+    <span class="music-pause" aria-hidden="true">Ⅱ</span>
+  </button>
+  <span id="music-status" class="sr-only" role="status"></span>
+  {music.src && <audio id="background-music" src={music.src} preload="none" loop data-title={music.title} />}
+</div>}
+<style is:global>
+  #music-player { position: fixed; right: 1.5rem; bottom: 5.5rem; z-index: 60; }
+  #music-toggle { width: 2.75rem; height: 2.75rem; display: grid; place-items: center; position: relative; box-shadow: 0 3px 18px rgb(0 0 0 / 10%); }
+  #music-toggle:disabled { opacity: .5; cursor: default; }
+  #music-toggle .music-pause { display: none; position: absolute; font-size: 1rem; }
+  #music-toggle[aria-pressed="true"] svg { animation: music-spin 8s linear infinite; }
+  #music-toggle[aria-pressed="true"]:hover svg { opacity: .25; }
+  #music-toggle[aria-pressed="true"]:hover .music-pause { display: block; }
+  html[data-hero-top] #music-player { visibility: hidden; pointer-events: none; }
+  html[data-home-hero] #music-player { opacity: var(--hero-nav-opacity, 0); }
+  @keyframes music-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { #music-toggle svg { animation: none !important; } }
+</style>
+<script>
+  const audio = document.querySelector<HTMLAudioElement>('#background-music');
+  const button = document.querySelector<HTMLButtonElement>('#music-toggle');
+  const status = document.getElementById('music-status');
+  if (audio && button && !button.dataset.bound) {
+    button.dataset.bound = 'true';
+    audio.volume = .5;
+    const update = () => {
+      const playing = !audio.paused;
+      button.setAttribute('aria-pressed', String(playing));
+      button.title = `${playing ? '暂停' : '播放'}：${audio.dataset.title || '背景音乐'}`;
+      button.setAttribute('aria-label', button.title);
+    };
+    const failure = () => {
+      update();
+      const message = '音乐暂时无法播放，请检查文件或稍后重试。';
+      if (status) status.textContent = message;
+      button.title = message;
+      button.setAttribute('aria-label', message);
+    };
+    button.addEventListener('click', async () => {
+      if (status) status.textContent = '';
+      if (!audio.paused) { audio.pause(); return; }
+      button.disabled = true;
+      try { await audio.play(); } catch { failure(); }
+      finally { button.disabled = false; }
+    });
+    audio.addEventListener('play', update);
+    audio.addEventListener('pause', update);
+    audio.addEventListener('error', failure);
+  }
+</script>
