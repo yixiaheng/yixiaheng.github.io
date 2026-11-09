@@ -20,6 +20,11 @@ async function getRawSortedPosts() {
 
 export async function getSortedPosts() {
 	const sorted = await getRawSortedPosts();
+	// Collection objects may be reused during a build: clear obsolete neighbours first.
+	for (const post of sorted) {
+		post.data.prevSlug = post.data.prevTitle = '';
+		post.data.nextSlug = post.data.nextTitle = '';
+	}
 
 	for (let i = 1; i < sorted.length; i++) {
 		sorted[i].data.nextSlug = sorted[i - 1].slug;

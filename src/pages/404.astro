@@ -1,0 +1,12 @@
+---
+import MainGridLayout from '../layouts/MainGridLayout.astro';
+---
+<MainGridLayout title="页面不存在">
+  <section class="card-base p-8 md:p-12">
+    <p class="text-[var(--primary)] mb-3">404</p>
+    <h1 class="text-3xl font-bold text-90 mb-4">这篇内容可能已删除或更换地址</h1>
+    <p class="text-75 mb-6">请从最新随笔列表查找。如果你刚刚发布了修改，请等待部署完成后刷新页面。</p>
+    <a href="/archive/" data-no-swup class="btn-regular inline-flex rounded-lg px-5 py-3">查看最新随笔</a>
+    <a href="/" data-no-swup class="btn-plain inline-flex rounded-lg px-5 py-3">返回首页</a>
+  </section>
+</MainGridLayout>

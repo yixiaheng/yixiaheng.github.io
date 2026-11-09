@@ -29,6 +29,7 @@ export default defineConfig({
 	site: "https://yixiaheng.github.io/",
 	base: "/",
 	trailingSlash: "always",
+	redirects: { '/posts/welcome/': '/posts/welcome-start/' },
 	integrations: [
 		tailwind({
 			nesting: true,
@@ -40,8 +41,8 @@ export default defineConfig({
 			// when the Tailwind class `transition-all` is used
 			containers: ["main", "#toc"],
 			smoothScrolling: true,
-			cache: true,
-			preload: true,
+			cache: false,
+			preload: false,
 			accessibility: true,
 			updateHead: true,
 			updateBodyClass: false,

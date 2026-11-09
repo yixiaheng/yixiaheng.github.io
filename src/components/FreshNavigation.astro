@@ -1,0 +1,15 @@
+<script>
+  let hooked = false;
+  function setup() {
+    const swup = window.swup;
+    if (hooked || !swup?.hooks) return;
+    hooked = true;
+    // Revalidate HTML with the server instead of reusing a browser-cached list.
+    // Static assets still retain their normal cache policy.
+    swup.hooks.replace('fetch:request', (_visit: unknown, { url, options }: { url: string; options: RequestInit }) =>
+      fetch(url, { ...options, cache: 'no-cache' }),
+    );
+  }
+  document.addEventListener('swup:enable', setup);
+  setup();
+</script>
