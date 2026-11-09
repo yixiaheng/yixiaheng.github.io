@@ -2,6 +2,7 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { getCategoryUrl } from "@utils/url-utils.ts";
+import path from 'node:path';
 
 // // Retrieve posts and sort them by publication date
 async function getRawSortedPosts() {
@@ -39,10 +40,18 @@ export async function getSortedPostsList(): Promise<PostForList[]> {
 	const sortedFullPosts = await getRawSortedPosts();
 
 	// delete post.body
-	const sortedPostsList = sortedFullPosts.map((post) => ({
+	const images = import.meta.glob<{ default: ImageMetadata }>('../content/posts/**/*.{jpg,jpeg,png,webp,gif,avif,svg}');
+	const sortedPostsList = await Promise.all(sortedFullPosts.map(async (post) => {
+		let image = post.data.image;
+		if (image && !/^(\/|https?:|data:)/.test(image)) {
+			const key = path.posix.normalize(`../content/posts/${path.posix.dirname(post.id)}/${image}`);
+			const asset = images[key];
+			image = asset ? (await asset()).default.src : '';
+		}
+		return {
 		slug: post.slug,
-		data: post.data,
-	}));
+		data: { ...post.data, image },
+	}; }));
 
 	return sortedPostsList;
 }

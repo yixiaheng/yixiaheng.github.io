@@ -63,7 +63,7 @@
         }
         order = 0;
       }, { threshold: 0.06 });
-      document.querySelectorAll('[data-reveal]').forEach(element => observer?.observe(element));
+      document.querySelectorAll('[data-reveal], .markdown-content > :is(h2, h3, blockquote, figure)').forEach(element => observer?.observe(element));
     }
     schedule();
   }
@@ -86,4 +86,13 @@
   document.addEventListener('swup:enable', setup);
   setup();
   init();
+  // Delegate to current cards so Swup navigation never adds duplicate listeners.
+  document.addEventListener('pointermove', event => {
+    if (!enabled() || !desktop.matches) return;
+    const card = (event.target as Element).closest<HTMLElement>('[data-motion-card]');
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--glow-x', `${event.clientX - rect.left}px`);
+    card.style.setProperty('--glow-y', `${event.clientY - rect.top}px`);
+  }, { passive: true });
 </script>

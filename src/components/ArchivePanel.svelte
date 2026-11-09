@@ -21,6 +21,7 @@ interface Post {
 		tags: string[];
 		category?: string | null;
 		published: Date;
+		image?: string;
 	};
 }
 
@@ -107,9 +108,10 @@ onMount(async () => {
                 <a
                         href={getPostUrlBySlug(post.slug)}
                         aria-label={post.data.title}
-                        class="group btn-plain !block h-10 w-full rounded-lg hover:text-[initial]"
+                        class="group btn-plain !block w-full rounded-lg hover:text-[initial]"
+                        style:min-height={post.data.image ? '5.5rem' : '2.5rem'}
                 >
-                    <div class="flex flex-row justify-start items-center h-full">
+                    <div class="flex flex-row justify-start items-center min-h-[inherit]">
                         <!-- date -->
                         <div class="w-[15%] md:w-[10%] transition text-sm text-right text-50">
                             {formatDate(post.data.published)}
@@ -128,8 +130,11 @@ onMount(async () => {
                         </div>
 
                         <!-- post title -->
+                        {#if post.data.image}
+                          <img src={post.data.image} alt="" class="archive-cover" loading="lazy" />
+                        {/if}
                         <div
-                                class="w-[70%] md:max-w-[65%] md:w-[65%] text-left font-bold
+                                class="flex-1 min-w-0 text-left font-bold
                      group-hover:translate-x-1 transition-all group-hover:text-[var(--primary)]
                      text-75 pr-8 whitespace-nowrap overflow-ellipsis overflow-hidden"
                         >
@@ -149,3 +154,8 @@ onMount(async () => {
         </div>
     {/each}
 </div>
+<style>
+  .archive-cover { width: 5rem; height: 3.25rem; object-fit: cover; border-radius: .6rem; margin-right: 1rem; flex-shrink: 0; transition: transform .3s ease; }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) { :global(html:not([data-motion="off"])) a:hover .archive-cover { transform: scale(1.04); } }
+  @media (max-width: 767px) { .archive-cover { width: 3.5rem; height: 2.75rem; margin-right: .6rem; } }
+</style>

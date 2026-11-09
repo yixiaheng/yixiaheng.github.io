@@ -233,6 +233,7 @@
           "name": "image",
           "label": "封面图片",
           "widget": "image",
+          "hint": "上传或选择封面，显示在首页随笔卡片、随笔列表及正文顶部。建议横向图片；留空则使用无封面布局。",
           "required": false
         },
         {
@@ -327,6 +328,7 @@
           "name": "image",
           "label": "封面图片",
           "widget": "image",
+          "hint": "上传或选择封面，显示在精选项目、项目列表及详情页。建议使用 16:9 横向图片。",
           "required": false
         },
         {

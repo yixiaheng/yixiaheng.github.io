@@ -7,7 +7,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
 ---
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
   {projects.map(project => <a href={`/projects/${project.slug}/`} data-motion-card data-reveal class="card-base p-6 block transition">
-    {project.data.image && <img src={project.data.image} alt={project.data.title} class="w-full aspect-video object-cover rounded-xl mb-4" loading="lazy" />}
+    {project.data.image && <div class="rounded-xl overflow-hidden mb-4"><img src={project.data.image} alt={project.data.title} class="w-full aspect-video object-cover" loading="lazy" /></div>}
     <div class="text-sm text-[var(--primary)] mb-3">{project.data.status}</div>
     <h3 class="text-xl font-bold text-black/90 dark:text-white/90 mb-2">{project.data.title}<span aria-hidden="true" class="ml-2 motion-arrow">↗</span></h3>
     <p class="text-black/60 dark:text-white/60 leading-relaxed">{project.data.description}</p>
