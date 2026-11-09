@@ -3,8 +3,13 @@
   "github": "https://github.com/yixiaheng",
   "bio": "本人计算机专业大二在读; \nUnity新人开发者;\n不怎么喜欢分享知识的小白;\n以后不想当哑巴的程序员；",
   "name": "HYX_HYD",
-  "banner": "/images/uploads/image_1793290334137_10.jpg",
+  "banner": "/images/uploads/preview2.gif",
   "heroKicker": "记录思考的褶皱 / 收集散落的光影 / 存放未竟的野心。",
+  "background": {
+    "enabled": true,
+    "image": "/images/uploads/image_1793290334137_10.jpg",
+    "opacity": 30
+  },
   "navigation": [
     {
       "name": "首页",
@@ -33,18 +38,13 @@
     }
   ],
   "bannerEnabled": true,
+  "motion": {
+    "enabled": true,
+    "intensity": "gentle"
+  },
   "subtitle": "感谢到来喵",
   "hue": 250,
   "title": "HYX_HYD的个人博客",
   "avatar": "/images/uploads/preview.jpg",
-  "heroTitle": "纵是焦土，亦生心蕊。",
-  "background": {
-    "enabled": true,
-    "image": "/images/uploads/image_1793290334137_10.jpg",
-    "opacity": 30
-  },
-  "motion": {
-    "enabled": true,
-    "intensity": "gentle"
-  }
+  "heroTitle": "纵是焦土，亦生心蕊。"
 }
