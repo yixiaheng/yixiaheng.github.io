@@ -60,7 +60,8 @@
             },
             {
               "name": "banner",
-              "label": "横幅图片",
+              "label": "首页横幅图片",
+              "hint": "首页顶部的独立大图，与页面背景分别设置。首页滚动到顶部时只展示这张图片。",
               "widget": "image"
             },
             {
@@ -121,7 +122,7 @@
               "widget": "object",
               "fields": [
                 { "name": "enabled", "label": "启用图片背景", "widget": "boolean", "default": true },
-                { "name": "image", "label": "背景图片", "widget": "image", "required": false, "hint": "可上传独立背景；留空时使用首页横幅图片。" },
+                { "name": "image", "label": "全页背景图片", "widget": "image", "required": false, "hint": "文章和卡片后方的独立背景，与首页横幅互不影响。留空时显示主题底色。" },
                 { "name": "opacity", "label": "背景浓度", "widget": "number", "value_type": "int", "min": 0, "max": 100, "step": 1, "default": 30, "hint": "0 为不显示图片，100 为原图浓度。推荐 20–40，暗色模式会自动降低浓度。" }
               ]
             },

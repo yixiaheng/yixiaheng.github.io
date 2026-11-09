@@ -1,0 +1,46 @@
+<style is:global>
+  /* Reserve the hero's space while scrolling, so revealing controls never shifts content. */
+  html[data-home-hero] #banner-wrapper {
+    top: 0 !important; height: 100svh !important; transform: none !important;
+  }
+  html[data-home-hero] #banner {
+    height: 100% !important; transform: none !important;
+  }
+  html[data-home-hero] #main-panel { top: calc(100svh + 1rem) !important; }
+  html[data-home-hero] #main-grid { transform: none !important; }
+  html[data-home-hero] #top-row { position: fixed; top: 0; left: 0; right: 0; width: 100%; }
+  html[data-home-hero] #navbar-wrapper { transform: none !important; opacity: 1 !important; }
+  html[data-hero-top] :is(#top-row, #back-to-top-btn, #banner-credit, #toc-wrapper, #reading-progress) {
+    visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
+  }
+</style>
+<script>
+  const root = document.documentElement;
+  function updateHero() {
+    const home = location.pathname === '/' && document.body.classList.contains('enable-banner');
+    root.toggleAttribute('data-home-hero', home);
+    const top = home && scrollY <= 4;
+    root.toggleAttribute('data-hero-top', top);
+    const navigation = document.getElementById('top-row');
+    if (navigation) navigation.inert = top;
+  }
+  addEventListener('scroll', updateHero, { passive: true });
+  addEventListener('pageshow', updateHero);
+  // Keyboard users can enter the blog without needing a mouse or a visible overlay.
+  addEventListener('keydown', event => {
+    if (event.key === 'Tab' && root.hasAttribute('data-hero-top')) {
+      window.scrollTo({ top: document.getElementById('main-panel')?.offsetTop ?? innerHeight, behavior: 'instant' });
+      updateHero();
+    }
+  });
+  let hooked = false;
+  function setup() {
+    if (hooked || !window.swup?.hooks) return;
+    hooked = true;
+    window.swup.hooks.on('page:view', updateHero);
+    window.swup.hooks.on('visit:end', updateHero);
+  }
+  document.addEventListener('swup:enable', setup);
+  setup();
+  updateHero();
+</script>
