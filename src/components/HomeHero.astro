@@ -1,7 +1,9 @@
 ---
 import { homeConfig } from '../config';
+import HeroClock from './HeroClock.astro';
 ---
 <div id="hero-lettering">
+  <HeroClock />
   <div class="hero-lettering-inner">
     <span class="hero-signature">{homeConfig.name} <span aria-hidden="true">·</span> JOURNAL</span>
     <p class="hero-art-title">{homeConfig.heroTitle}</p>
