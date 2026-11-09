@@ -1,4 +1,5 @@
 ---
+slug: personal-blog
 title: 个人博客
 description: 基于 Astro 与 Fuwari 的个人空间，用来整理知识、展示项目和记录开发过程。
 status: 搭建中 · 示例项目

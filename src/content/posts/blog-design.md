@@ -1,4 +1,5 @@
 ---
+slug: blog-design
 title: 博客搭建笔记：让项目与随笔连接起来
 published: 2026-11-09
 description: 示例开发笔记：项目页负责展示成果，随笔记录过程，通过项目标识自动关联。

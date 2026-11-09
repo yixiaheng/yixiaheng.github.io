@@ -29,3 +29,7 @@ yarn.lock
 # ide
 .idea
 *.iml
+
+# Cloudflare local credentials and cache
+.wrangler/
+.dev.vars*

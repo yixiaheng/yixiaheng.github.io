@@ -1,4 +1,5 @@
 ---
+slug: welcome
 title: 从这里开始记录
 published: 2026-11-09
 description: 一篇示例随笔，展示这个博客的写作与阅读方式。正式发布前可以自由修改或删除。

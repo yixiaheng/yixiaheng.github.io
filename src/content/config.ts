@@ -4,8 +4,8 @@ const postsCollection = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		projects: z.array(z.string()).default([]),
-		published: z.date(),
-		updated: z.date().optional(),
+		published: z.coerce.date(),
+		updated: z.preprocess(v => v === "" || v === null ? undefined : v, z.coerce.date().optional()),
 		draft: z.boolean().optional().default(false),
 		description: z.string().optional().default(""),
 		image: z.string().optional().default(""),
@@ -30,7 +30,7 @@ const projectsCollection = defineCollection({
     status: z.string().default('开发中'), featured: z.boolean().default(false),
     draft: z.boolean().default(false), image: z.string().default(''),
     tags: z.array(z.string()).default([]),
-    repository: z.string().url().optional(),
+    repository: z.preprocess(v => v === "" || v === null ? undefined : v, z.string().url().optional()),
     downloads: z.array(z.object({ label: z.string(), url: z.string().url(), version: z.string().optional(), size: z.string().optional() })).default([]),
   }),
 });

@@ -1,0 +1,41 @@
+{
+  "title": "yixiaheng",
+  "subtitle": "记录所学，也记录创造。",
+  "name": "yixiaheng",
+  "bio": "记录知识、分享项目，把想法慢慢变成作品。",
+  "avatar": "/images/demo-avatar.png",
+  "banner": "/images/demo-banner.png",
+  "bannerEnabled": true,
+  "hue": 250,
+  "github": "https://github.com/yixiaheng",
+  "heroKicker": "笔记 · 项目 · 灵感",
+  "heroTitle": "记录所学，也记录创造。",
+  "heroDescription": "你好，我是 yixiaheng。这里收藏知识与思考，也记录把想法变成作品的过程。",
+  "navigation": [
+    {
+      "name": "首页",
+      "url": "/",
+      "external": false
+    },
+    {
+      "name": "项目",
+      "url": "/projects/",
+      "external": false
+    },
+    {
+      "name": "随笔",
+      "url": "/archive/",
+      "external": false
+    },
+    {
+      "name": "关于",
+      "url": "/about/",
+      "external": false
+    },
+    {
+      "name": "GitHub",
+      "url": "https://github.com/yixiaheng",
+      "external": true
+    }
+  ]
+}

@@ -1,0 +1,341 @@
+{
+  "load_config_file": false,
+  "locale": "zh_Hans",
+  "backend": {
+    "name": "github",
+    "repo": "yixiaheng/yixiaheng.github.io",
+    "branch": "main",
+    "base_url": "",
+    "auth_endpoint": "auth"
+  },
+  "media_folder": "public/images/uploads",
+  "public_folder": "/images/uploads",
+  "site_url": "https://yixiaheng.github.io",
+  "display_url": "https://yixiaheng.github.io",
+  "logo_url": "/images/demo-avatar.png",
+  "slug": {
+    "encoding": "ascii",
+    "clean_accents": true,
+    "sanitize_replacement": "-"
+  },
+  "collections": [
+    {
+      "name": "settings",
+      "label": "网站设置",
+      "files": [
+        {
+          "name": "site",
+          "label": "网站外观与信息",
+          "file": "src/data/settings.json",
+          "fields": [
+            {
+              "name": "title",
+              "label": "网站标题",
+              "widget": "string"
+            },
+            {
+              "name": "subtitle",
+              "label": "网站副标题",
+              "widget": "string"
+            },
+            {
+              "name": "name",
+              "label": "昵称",
+              "widget": "string"
+            },
+            {
+              "name": "bio",
+              "label": "个人简介",
+              "widget": "text"
+            },
+            {
+              "name": "avatar",
+              "label": "头像",
+              "widget": "image"
+            },
+            {
+              "name": "bannerEnabled",
+              "label": "显示横幅",
+              "widget": "boolean"
+            },
+            {
+              "name": "banner",
+              "label": "横幅图片",
+              "widget": "image"
+            },
+            {
+              "name": "hue",
+              "label": "主题色相（0–360）",
+              "widget": "number",
+              "value_type": "int",
+              "min": 0,
+              "max": 360
+            },
+            {
+              "name": "github",
+              "label": "GitHub 主页",
+              "widget": "string",
+              "required": false
+            },
+            {
+              "name": "heroKicker",
+              "label": "首页引导文字",
+              "widget": "string"
+            },
+            {
+              "name": "heroTitle",
+              "label": "首页标题",
+              "widget": "string"
+            },
+            {
+              "name": "heroDescription",
+              "label": "首页介绍",
+              "widget": "text"
+            },
+            {
+              "name": "navigation",
+              "label": "导航菜单",
+              "widget": "list",
+              "fields": [
+                {
+                  "name": "name",
+                  "label": "名称",
+                  "widget": "string"
+                },
+                {
+                  "name": "url",
+                  "label": "链接",
+                  "widget": "string"
+                },
+                {
+                  "name": "external",
+                  "label": "在新窗口打开",
+                  "widget": "boolean",
+                  "default": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "posts",
+      "label": "随笔",
+      "folder": "src/content/posts",
+      "create": true,
+      "slug": "{{slug}}",
+      "identifier_field": "slug",
+      "summary": "{{title}}",
+      "fields": [
+        {
+          "name": "slug",
+          "label": "网址标识",
+          "widget": "string",
+          "hint": "使用小写英文字母、数字和连字符，例如 my-first-post；发布后请不要更改。",
+          "pattern": [
+            "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "请使用小写英文字母、数字和连字符"
+          ]
+        },
+        {
+          "name": "title",
+          "label": "标题",
+          "widget": "string"
+        },
+        {
+          "name": "published",
+          "label": "发布时间",
+          "widget": "datetime",
+          "format": "YYYY-MM-DDTHH:mm:ssZ"
+        },
+        {
+          "name": "updated",
+          "label": "更新时间",
+          "widget": "datetime",
+          "format": "YYYY-MM-DDTHH:mm:ssZ",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "draft",
+          "label": "草稿（开启后不会出现在博客）",
+          "widget": "boolean",
+          "default": true
+        },
+        {
+          "name": "description",
+          "label": "摘要",
+          "widget": "text",
+          "required": false
+        },
+        {
+          "name": "image",
+          "label": "封面图片",
+          "widget": "image",
+          "required": false
+        },
+        {
+          "name": "tags",
+          "label": "标签",
+          "widget": "list",
+          "required": false,
+          "default": []
+        },
+        {
+          "name": "category",
+          "label": "分类",
+          "widget": "string",
+          "required": false
+        },
+        {
+          "name": "projects",
+          "label": "关联项目",
+          "widget": "relation",
+          "collection": "projects",
+          "search_fields": [
+            "title"
+          ],
+          "value_field": "{{slug}}",
+          "display_fields": [
+            "title"
+          ],
+          "multiple": true,
+          "required": false
+        },
+        {
+          "name": "body",
+          "label": "正文",
+          "widget": "markdown"
+        }
+      ]
+    },
+    {
+      "name": "projects",
+      "label": "项目",
+      "folder": "src/content/projects",
+      "create": true,
+      "slug": "{{slug}}",
+      "identifier_field": "slug",
+      "summary": "{{title}}",
+      "fields": [
+        {
+          "name": "slug",
+          "label": "网址标识",
+          "widget": "string",
+          "hint": "使用小写英文字母、数字和连字符，例如 my-first-post；发布后请不要更改。",
+          "pattern": [
+            "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "请使用小写英文字母、数字和连字符"
+          ]
+        },
+        {
+          "name": "title",
+          "label": "项目名称",
+          "widget": "string"
+        },
+        {
+          "name": "description",
+          "label": "简介",
+          "widget": "text"
+        },
+        {
+          "name": "status",
+          "label": "状态",
+          "widget": "select",
+          "options": [
+            "开发中",
+            "已完成",
+            "维护中",
+            "已归档"
+          ],
+          "default": "开发中"
+        },
+        {
+          "name": "featured",
+          "label": "首页精选",
+          "widget": "boolean",
+          "default": false
+        },
+        {
+          "name": "draft",
+          "label": "草稿（开启后不会出现在博客）",
+          "widget": "boolean",
+          "default": true
+        },
+        {
+          "name": "image",
+          "label": "封面图片",
+          "widget": "image",
+          "required": false
+        },
+        {
+          "name": "tags",
+          "label": "标签",
+          "widget": "list",
+          "required": false,
+          "default": []
+        },
+        {
+          "name": "repository",
+          "label": "源码地址",
+          "widget": "string",
+          "required": false
+        },
+        {
+          "name": "downloads",
+          "label": "下载链接",
+          "widget": "list",
+          "required": false,
+          "fields": [
+            {
+              "name": "label",
+              "label": "按钮文字",
+              "widget": "string"
+            },
+            {
+              "name": "url",
+              "label": "下载地址",
+              "widget": "string"
+            },
+            {
+              "name": "version",
+              "label": "版本",
+              "widget": "string",
+              "required": false
+            },
+            {
+              "name": "size",
+              "label": "文件大小",
+              "widget": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "body",
+          "label": "正文",
+          "widget": "markdown"
+        }
+      ]
+    },
+    {
+      "name": "pages",
+      "label": "关于",
+      "files": [
+        {
+          "name": "about",
+          "label": "关于我",
+          "file": "src/content/spec/about.md",
+          "fields": [
+            {
+              "name": "body",
+              "label": "正文",
+              "widget": "markdown"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
