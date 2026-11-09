@@ -1,30 +1,84 @@
+---
+import { homeConfig } from '../config';
+---
+<div id="hero-lettering">
+  <div class="hero-lettering-inner">
+    <span class="hero-signature">{homeConfig.name} <span aria-hidden="true">·</span> JOURNAL</span>
+    <p class="hero-art-title">{homeConfig.heroTitle}</p>
+    <span class="hero-title-rule" aria-hidden="true"></span>
+    <p class="hero-art-subtitle">{homeConfig.heroDescription}</p>
+  </div>
+</div>
 <style is:global>
+  #hero-lettering { display: none; }
+  html[data-home-hero] #hero-lettering {
+    display: flex; align-items: flex-end; position: absolute; inset: 0 0 auto;
+    height: 100svh; z-index: 20; pointer-events: none;
+    padding: 0 max(7vw, calc((100vw - 1168px) / 2)) 17svh;
+    background: linear-gradient(180deg, transparent 35%, rgb(10 18 32 / 38%) 78%, transparent);
+  }
+  .hero-lettering-inner { opacity: var(--hero-title-opacity, 1); transform: translateY(var(--hero-title-shift, 0px)); color: white; max-width: 100%; }
+  .hero-signature { font-size: .75rem; letter-spacing: .3em; font-weight: 500; text-shadow: 0 2px 10px #172536; }
+  .hero-signature span { color: oklch(.86 .08 var(--hue)); padding: 0 .5em; }
+  .hero-art-title {
+    font-family: 'STKaiti', 'KaiTi', 'Kaiti SC', 'Noto Serif CJK SC', serif;
+    font-size: clamp(2.15rem, 5.2vw, 5.25rem); font-weight: 700; letter-spacing: .07em;
+    line-height: 1.5; margin: .25em 0 .15em; text-wrap: balance;
+    text-shadow: 0 3px 20px rgb(8 16 30 / 70%), 0 0 40px rgb(8 16 30 / 25%);
+  }
+  .hero-title-rule { display: block; width: 5rem; height: 2px; margin: .8rem 0 1.1rem; background: linear-gradient(90deg, oklch(.86 .08 var(--hue)), transparent); }
+  .hero-art-subtitle { font-size: clamp(.85rem, 1.2vw, 1rem); letter-spacing: .15em; line-height: 1.9; text-shadow: 0 2px 8px #101c2d; }
+  @media (max-width: 767px) {
+    html[data-home-hero] #hero-lettering { padding: 0 7vw 18svh; }
+    .hero-art-title { max-width: 8em; }
+    .hero-signature { font-size: .65rem; letter-spacing: .2em; }
+  }
   /* Reserve the hero's space while scrolling, so revealing controls never shifts content. */
   html[data-home-hero] #banner-wrapper {
     top: 0 !important; height: 100svh !important; transform: none !important;
+    mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
   }
   html[data-home-hero] #banner {
     height: 100% !important; transform: none !important;
   }
   html[data-home-hero] #main-panel { top: calc(100svh + 1rem) !important; }
   html[data-home-hero] #main-grid { transform: none !important; }
-  html[data-home-hero] #top-row { position: fixed; top: 0; left: 0; right: 0; width: 100%; }
+  html[data-home-hero] #top-row {
+    position: fixed; top: 0; left: 0; right: 0; width: 100%;
+    opacity: var(--hero-nav-opacity, 0); transform: translateY(var(--hero-nav-shift, -12px));
+    transition: none !important;
+  }
   html[data-home-hero] #navbar-wrapper { transform: none !important; opacity: 1 !important; }
-  html[data-hero-top] :is(#top-row, #back-to-top-btn, #banner-credit, #toc-wrapper, #reading-progress) {
+  html[data-hero-top] :is(#back-to-top-btn, #banner-credit, #toc-wrapper, #reading-progress) {
     visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
   }
 </style>
 <script>
   const root = document.documentElement;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  let frame = 0;
   function updateHero() {
+    frame = 0;
     const home = location.pathname === '/' && document.body.classList.contains('enable-banner');
     root.toggleAttribute('data-home-hero', home);
-    const top = home && scrollY <= 4;
+    const range = Math.max(160, innerHeight * .3);
+    const progress = Math.max(0, Math.min(1, scrollY / range));
+    const eased = progress * progress * (3 - 2 * progress);
+    const animate = !reduced.matches && root.dataset.motion !== 'off';
+    const opacity = animate ? eased : (scrollY > 4 ? 1 : 0);
+    root.style.setProperty('--hero-nav-opacity', String(opacity));
+    root.style.setProperty('--hero-nav-shift', `${animate ? -12 * (1 - eased) : 0}px`);
+    root.style.setProperty('--hero-title-opacity', String(animate ? 1 - eased : 1));
+    root.style.setProperty('--hero-title-shift', `${animate ? -18 * eased : 0}px`);
+    const top = home && opacity < .05;
     root.toggleAttribute('data-hero-top', top);
     const navigation = document.getElementById('top-row');
     if (navigation) navigation.inert = top;
   }
-  addEventListener('scroll', updateHero, { passive: true });
+  function schedule() { if (!frame) frame = requestAnimationFrame(updateHero); }
+  addEventListener('scroll', schedule, { passive: true });
+  addEventListener('resize', schedule, { passive: true });
+  reduced.addEventListener('change', schedule);
   addEventListener('pageshow', updateHero);
   // Keyboard users can enter the blog without needing a mouse or a visible overlay.
   addEventListener('keydown', event => {

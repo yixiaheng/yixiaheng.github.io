@@ -24,7 +24,8 @@
       const amount = enabled() && desktop.matches
         ? Math.min(scrollY * (root.dataset.motion === 'standard' ? 0.1 : 0.06), 28) : 0;
       image.style.translate = `0 ${amount}px`;
-      image.style.scale = amount ? '1.08' : '';
+      // Keep overscan constant: changing scale on the first scroll caused a visible jump.
+      image.style.scale = enabled() && desktop.matches ? '1.08' : '';
     }
     const progress = document.getElementById('reading-progress');
     if (!progress) return;

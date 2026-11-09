@@ -86,11 +86,13 @@
             {
               "name": "heroTitle",
               "label": "首页标题",
+              "hint": "同时用于横幅艺术字和下方首页介绍卡片。",
               "widget": "string"
             },
             {
               "name": "heroDescription",
               "label": "首页介绍",
+              "hint": "同时显示在横幅艺术字下方和首页介绍卡片中。",
               "widget": "text"
             },
             {
