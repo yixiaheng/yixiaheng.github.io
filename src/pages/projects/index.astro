@@ -1,0 +1,11 @@
+---
+import MainGridLayout from '../../layouts/MainGridLayout.astro';
+import ProjectCards from '../../components/ProjectCards.astro';
+---
+<MainGridLayout title="项目" description="作品、工具与开发过程。">
+  <section class="card-base p-6 md:p-9 mb-4">
+    <h1 class="text-3xl font-bold text-black/90 dark:text-white/90 mb-3">项目</h1>
+    <p class="text-black/60 dark:text-white/60">从一个想法开始，记录每一次尝试与完成。</p>
+  </section>
+  <ProjectCards />
+</MainGridLayout>

@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import MainGridLayout from '../../layouts/MainGridLayout.astro';
+import Markdown from '../../components/misc/Markdown.astro';
+import { getSortedPosts } from '../../utils/content-utils';
+import { getPostUrlBySlug } from '../../utils/url-utils';
+export async function getStaticPaths() {
+  return (await getCollection('projects', ({ data }) => !data.draft))
+    .map(entry => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+const posts = (await getSortedPosts()).filter(post => post.data.projects.includes(entry.slug));
+---
+<MainGridLayout title={entry.data.title} description={entry.data.description} headings={headings}>
+  <article class="card-base p-6 md:p-9 mb-4" data-pagefind-body>
+    <a href="/projects/" class="text-[var(--primary)]">← 所有项目</a>
+    <p class="text-sm text-black/50 dark:text-white/50 mt-6 mb-2">{entry.data.status}</p>
+    <h1 class="text-3xl font-bold text-black/90 dark:text-white/90 mb-4" data-pagefind-meta="title">{entry.data.title}</h1>
+    <p class="text-black/60 dark:text-white/60 mb-6">{entry.data.description}</p>
+    {entry.data.image && <img src={entry.data.image} alt={entry.data.title} class="w-full rounded-xl mb-6" />}
+    <div class="flex flex-wrap gap-3 mb-6">
+      {entry.data.repository && <a class="btn-regular rounded-lg px-4 py-3" href={entry.data.repository} target="_blank" rel="noopener noreferrer">获取源码 ↗</a>}
+      {entry.data.downloads.map(download => <a class="btn-regular rounded-lg px-4 py-3" href={download.url} target="_blank" rel="noopener noreferrer">{download.label} {download.version} {download.size} ↓</a>)}
+    </div>
+    <Markdown class="markdown-content"><Content /></Markdown>
+  </article>
+  <section class="card-base p-6 md:p-9 mb-4">
+    <h2 class="text-xl font-bold text-black/90 dark:text-white/90 mb-4">相关随笔</h2>
+    {posts.length ? <ul class="space-y-4">{posts.map(post => <li><a class="text-[var(--primary)] hover:underline" href={getPostUrlBySlug(post.slug)}>{post.data.title}</a><p class="text-sm text-black/50 dark:text-white/50 mt-1">{post.data.description}</p></li>)}</ul> : <p class="text-black/60 dark:text-white/60">相关随笔正在整理中。</p>}
+  </section>
+</MainGridLayout>

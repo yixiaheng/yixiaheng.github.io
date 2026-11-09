@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+interface Props { featured?: boolean; }
+const { featured = false } = Astro.props;
+const projects = (await getCollection('projects', ({ data }) => !data.draft))
+  .filter(p => !featured || p.data.featured);
+---
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+  {projects.map(project => <a href={`/projects/${project.slug}/`} class="card-base p-6 block transition hover:-translate-y-1">
+    {project.data.image && <img src={project.data.image} alt={project.data.title} class="w-full aspect-video object-cover rounded-xl mb-4" loading="lazy" />}
+    <div class="text-sm text-[var(--primary)] mb-3">{project.data.status}</div>
+    <h3 class="text-xl font-bold text-black/90 dark:text-white/90 mb-2">{project.data.title}<span aria-hidden="true" class="ml-2">↗</span></h3>
+    <p class="text-black/60 dark:text-white/60 leading-relaxed">{project.data.description}</p>
+    <div class="flex flex-wrap gap-2 mt-4">{project.data.tags.map(tag => <span class="text-xs px-2 py-1 rounded-md bg-black/5 dark:bg-white/10 text-black/60 dark:text-white/60">{tag}</span>)}</div>
+  </a>)}
+</div>
+{projects.length === 0 && <p class="card-base p-6 mb-6 text-black/60 dark:text-white/60">项目正在整理中。</p>}
