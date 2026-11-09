@@ -4,6 +4,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 import MotionEffects from "../components/MotionEffects.astro";
+import PageBackground from "../components/PageBackground.astro";
 import { motionConfig } from "../config";
 import "../styles/motion.css";
 import ConfigCarrier from "@components/ConfigCarrier.astro";
@@ -156,6 +157,7 @@ const bannerOffset =
 		  data-overlayscrollbars-initialize
 	>
 		<ConfigCarrier></ConfigCarrier>
+        <PageBackground />
         <MotionEffects />
 		<slot />
 

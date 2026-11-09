@@ -38,6 +38,11 @@
   "title": "HYX_HYD的个人博客",
   "avatar": "/images/uploads/preview.jpg",
   "heroTitle": "纵是焦土，亦生心蕊。",
+  "background": {
+    "enabled": true,
+    "image": "",
+    "opacity": 30
+  },
   "motion": {
     "enabled": true,
     "intensity": "gentle"

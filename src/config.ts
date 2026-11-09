@@ -17,3 +17,8 @@ export const licenseConfig: LicenseConfig = { enable: false, name: 'CC BY-NC-SA 
 export const expressiveCodeConfig: ExpressiveCodeConfig = { theme: 'github-dark' };
 
 export const motionConfig = { enabled: settings.motion?.enabled ?? true, intensity: settings.motion?.intensity ?? "gentle" };
+export const backgroundConfig = {
+  enabled: settings.background?.enabled ?? true,
+  image: settings.background?.image?.trim() || settings.banner,
+  opacity: Math.max(0, Math.min(100, Number(settings.background?.opacity ?? 30) || 0)),
+};
