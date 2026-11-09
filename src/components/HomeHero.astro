@@ -99,6 +99,9 @@ import { homeConfig } from '../config';
   addEventListener('keydown', event => {
     if (event.key === 'Tab' && root.hasAttribute('data-hero-top')) {
       window.scrollTo({ top: document.getElementById('main-panel')?.offsetTop ?? innerHeight, behavior: 'instant' });
+      hidden = false;
+      travel = 0;
+      lastY = Math.max(0, scrollY);
       updateHero();
     }
   });
