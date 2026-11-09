@@ -114,6 +114,35 @@
                   "default": false
                 }
               ]
+            },
+            {
+              "name": "motion",
+              "label": "动态效果",
+              "widget": "object",
+              "fields": [
+                {
+                  "name": "enabled",
+                  "label": "启用动态效果",
+                  "widget": "boolean",
+                  "default": true
+                },
+                {
+                  "name": "intensity",
+                  "label": "动画强度",
+                  "widget": "select",
+                  "options": [
+                    {
+                      "label": "轻柔",
+                      "value": "gentle"
+                    },
+                    {
+                      "label": "标准",
+                      "value": "standard"
+                    }
+                  ],
+                  "default": "gentle"
+                }
+              ]
             }
           ]
         }

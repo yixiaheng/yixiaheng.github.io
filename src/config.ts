@@ -15,3 +15,5 @@ export const profileConfig: ProfileConfig = {
 // 尚未指定文章授权协议，因此默认不显示主题自带的 CC 授权声明。
 export const licenseConfig: LicenseConfig = { enable: false, name: 'CC BY-NC-SA 4.0', url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/' };
 export const expressiveCodeConfig: ExpressiveCodeConfig = { theme: 'github-dark' };
+
+export const motionConfig = { enabled: settings.motion?.enabled ?? true, intensity: settings.motion?.intensity ?? "gentle" };

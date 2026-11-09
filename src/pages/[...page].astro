@@ -21,7 +21,7 @@ const len = page.data.length;
 
 <MainGridLayout>
     {page.currentPage === 1 && <>
-      <section class="card-base p-6 md:p-9 mb-4">
+      <section data-reveal class="card-base p-6 md:p-9 mb-4">
         <p class="text-sm text-[var(--primary)] mb-3">{homeConfig.heroKicker}</p>
         <h1 class="text-3xl md:text-4xl font-bold text-black/90 dark:text-white/90 mb-4">{homeConfig.heroTitle}</h1>
         <p class="text-black/60 dark:text-white/60 leading-relaxed">{homeConfig.heroDescription}</p>

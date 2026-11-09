@@ -37,5 +37,9 @@
   "hue": 250,
   "title": "HYX_HYD的个人博客",
   "avatar": "/images/uploads/preview.jpg",
-  "heroTitle": "纵是焦土，亦生心蕊。"
+  "heroTitle": "纵是焦土，亦生心蕊。",
+  "motion": {
+    "enabled": true,
+    "intensity": "gentle"
+  }
 }

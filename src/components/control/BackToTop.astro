@@ -26,24 +26,26 @@ import { Icon } from "astro-icon/components";
     font-weight: bold
     border: none
     position: fixed
-    bottom: 10rem
+    bottom: 2rem
+    right: 1.5rem
+    z-index: 60
     opacity: 1
     cursor: pointer
-    transform: translateX(5rem)
+    transform: translateY(0)
     pointer-events: auto
     i
         font-size: 1.75rem
     &.hide
-        transform: translateX(5rem) scale(0.9)
+        transform: translateY(0.5rem) scale(0.9)
         opacity: 0
         pointer-events: none
     &:active
-      transform: translateX(5rem) scale(0.9)
+      transform: scale(0.95)
 
 </style>
 
 <script is:raw is:inline>
 function backToTop() {
-    window.scroll({ top: 0, behavior: 'smooth' });
+    window.scroll({ top: 0, behavior: document.documentElement.dataset.motion !== 'off' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'smooth' : 'instant' });
 }
 </script>

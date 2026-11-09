@@ -6,10 +6,10 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
   .filter(p => !featured || p.data.featured);
 ---
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-  {projects.map(project => <a href={`/projects/${project.slug}/`} class="card-base p-6 block transition hover:-translate-y-1">
+  {projects.map(project => <a href={`/projects/${project.slug}/`} data-motion-card data-reveal class="card-base p-6 block transition">
     {project.data.image && <img src={project.data.image} alt={project.data.title} class="w-full aspect-video object-cover rounded-xl mb-4" loading="lazy" />}
     <div class="text-sm text-[var(--primary)] mb-3">{project.data.status}</div>
-    <h3 class="text-xl font-bold text-black/90 dark:text-white/90 mb-2">{project.data.title}<span aria-hidden="true" class="ml-2">↗</span></h3>
+    <h3 class="text-xl font-bold text-black/90 dark:text-white/90 mb-2">{project.data.title}<span aria-hidden="true" class="ml-2 motion-arrow">↗</span></h3>
     <p class="text-black/60 dark:text-white/60 leading-relaxed">{project.data.description}</p>
     <div class="flex flex-wrap gap-2 mt-4">{project.data.tags.map(tag => <span class="text-xs px-2 py-1 rounded-md bg-black/5 dark:bg-white/10 text-black/60 dark:text-white/60">{tag}</span>)}</div>
   </a>)}

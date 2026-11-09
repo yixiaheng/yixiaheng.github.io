@@ -1,0 +1,37 @@
+/* Content stays visible when scripts are unavailable. Entrance animations use WAAPI. */
+html[data-motion] { --motion-lift: -3px; --motion-zoom: 1.025; }
+html[data-motion="standard"] { --motion-lift: -5px; --motion-zoom: 1.045; }
+html[data-motion] #content-wrapper,
+html[data-motion] [data-reveal] { animation: none !important; opacity: 1; }
+html:not([data-motion="off"]) :is(.card-base, button, .btn-regular, .btn-card, .btn-plain) {
+  transition-property: background-color, color, border-color, box-shadow, transform, scale;
+  transition-duration: 250ms;
+}
+html:not([data-motion="off"]) [data-motion-card] img {
+  transition: transform 450ms cubic-bezier(.2,.7,.2,1);
+}
+.motion-arrow { display: inline-block; transition: transform 250ms ease; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="off"]) [data-motion-card]:is(:hover, :focus-within) {
+    transform: translateY(var(--motion-lift));
+    box-shadow: 0 10px 24px -14px rgb(50 40 100 / 35%);
+  }
+  html:not([data-motion="off"]) [data-motion-card]:is(:hover, :focus-within) img { transform: scale(var(--motion-zoom)); }
+  html:not([data-motion="off"]) [data-motion-card]:is(:hover, :focus-within) .motion-arrow { transform: translate(3px, -2px); }
+}
+html:not([data-motion="off"]) :is(button, a.btn-regular, a.btn-card):active { scale: .97; }
+#reading-progress { position: fixed; inset: 0 0 auto; height: 3px; z-index: 100; pointer-events: none; }
+#reading-progress[hidden] { display: none; }
+#reading-progress > div { height: 100%; background: var(--primary); transform: scaleX(0); transform-origin: left; }
+/* Keep panels' visibility transforms intact; only disable timing and decorative motion. */
+html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after {
+  animation-duration: 0s !important; animation-delay: 0s !important;
+  transition-duration: 0s !important; transition-delay: 0s !important; scroll-behavior: auto !important;
+}
+html[data-motion="off"] .onload-animation { opacity: 1 !important; animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
+  .onload-animation { opacity: 1 !important; animation: none !important; }
+  [data-motion-card] img, .motion-arrow { transform: none !important; }
+  :is(button, a.btn-regular, a.btn-card):active { scale: 1 !important; }
+}

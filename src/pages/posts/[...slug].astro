@@ -105,9 +105,11 @@ const jsonLd = {
             }
 
 
+            <div data-reading-content>
             <Markdown class="mb-6 markdown-content onload-animation">
                 <Content />
             </Markdown>
+            </div>
 
             {licenseConfig.enable && <License title={entry.data.title} slug={entry.slug} pubDate={entry.data.published} class="mb-6 rounded-xl license-container onload-animation"></License>}
 

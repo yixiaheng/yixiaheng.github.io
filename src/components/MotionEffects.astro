@@ -1,0 +1,88 @@
+<div id="reading-progress" aria-hidden="true" hidden><div></div></div>
+<script>
+  const root = document.documentElement;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const desktop = matchMedia('(min-width: 1024px) and (pointer: fine)');
+  const enabled = () => root.dataset.motion !== 'off' && !reduced.matches;
+  function syncScrolling() {
+    const plugin = window.swup?.findPlugin('SwupScrollPlugin') as unknown as {
+      options: { animateScroll: { betweenPages: boolean; samePageWithHash: boolean; samePage: boolean } }
+    } | undefined;
+    if (plugin) plugin.options.animateScroll = {
+      betweenPages: enabled(), samePageWithHash: enabled(), samePage: enabled(),
+    };
+  }
+  let observer: IntersectionObserver | undefined;
+  let article: HTMLElement | null;
+  let frame = 0;
+  const animations = new Set<Animation>();
+
+  function update() {
+    frame = 0;
+    const image = document.querySelector<HTMLElement>('#banner img');
+    if (image) {
+      const amount = enabled() && desktop.matches
+        ? Math.min(scrollY * (root.dataset.motion === 'standard' ? 0.1 : 0.06), 28) : 0;
+      image.style.translate = `0 ${amount}px`;
+      image.style.scale = amount ? '1.08' : '';
+    }
+    const progress = document.getElementById('reading-progress');
+    if (!progress) return;
+    progress.hidden = !article || root.dataset.motion === 'off';
+    if (article) {
+      const rect = article.getBoundingClientRect();
+      const distance = rect.height - innerHeight * 0.65;
+      const value = distance > 0 ? (innerHeight * 0.15 - rect.top) / distance
+        : (innerHeight - rect.top) / Math.max(rect.height, 1);
+      (progress.firstElementChild as HTMLElement).style.transform = `scaleX(${Math.max(0, Math.min(1, value))})`;
+    }
+  }
+  function schedule() { if (!frame) frame = requestAnimationFrame(update); }
+  function cleanup() {
+    observer?.disconnect();
+    animations.forEach(animation => animation.cancel());
+    animations.clear();
+  }
+  function init() {
+    cleanup();
+    syncScrolling();
+    article = document.querySelector('[data-reading-content]');
+    if (enabled()) {
+      let order = 0;
+      observer = new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          observer?.unobserve(entry.target);
+          const animation = entry.target.animate([
+            { opacity: 0, translate: `0 ${desktop.matches ? (root.dataset.motion === 'standard' ? 22 : 12) : 6}px` },
+            { opacity: 1, translate: '0 0' },
+          ], { duration: 420, delay: Math.min(order++ * 55, 165), easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
+          animations.add(animation);
+          animation.finished.then(() => animations.delete(animation)).catch(() => {});
+        }
+        order = 0;
+      }, { threshold: 0.06 });
+      document.querySelectorAll('[data-reveal]').forEach(element => observer?.observe(element));
+    }
+    schedule();
+  }
+  addEventListener('scroll', schedule, { passive: true });
+  addEventListener('resize', schedule, { passive: true });
+  document.addEventListener('load', schedule, true);
+  reduced.addEventListener('change', init);
+  desktop.addEventListener('change', init);
+  const resize = new ResizeObserver(schedule);
+  resize.observe(document.body);
+  let hooked = false;
+  function setup() {
+    syncScrolling();
+    if (hooked || !window.swup?.hooks) return;
+    hooked = true;
+    window.swup.hooks.on('visit:start', cleanup);
+    window.swup.hooks.on('page:view', init);
+    window.swup.hooks.on('visit:end', schedule);
+  }
+  document.addEventListener('swup:enable', setup);
+  setup();
+  init();
+</script>
