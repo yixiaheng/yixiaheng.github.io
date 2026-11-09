@@ -1,16 +1,10 @@
 {
-  "title": "yixiaheng",
-  "subtitle": "记录所学，也记录创造。",
-  "name": "yixiaheng",
-  "bio": "记录知识、分享项目，把想法慢慢变成作品。",
-  "avatar": "/images/demo-avatar.png",
-  "banner": "/images/demo-banner.png",
-  "bannerEnabled": true,
-  "hue": 250,
-  "github": "https://github.com/yixiaheng",
-  "heroKicker": "笔记 · 项目 · 灵感",
-  "heroTitle": "记录所学，也记录创造。",
   "heroDescription": "你好，我是 yixiaheng。这里收藏知识与思考，也记录把想法变成作品的过程。",
+  "github": "https://github.com/yixiaheng",
+  "bio": "计算机大二在读牲; \n\nUnity新人开发者;\n\n不怎么喜欢分享知识的小白;\n\n以后不想当哑巴",
+  "name": "HYX_HYD",
+  "banner": "/images/demo-banner.png",
+  "heroKicker": "笔记 · 项目 · 灵感",
   "navigation": [
     {
       "name": "首页",
@@ -37,5 +31,11 @@
       "url": "https://github.com/yixiaheng",
       "external": true
     }
-  ]
+  ],
+  "bannerEnabled": true,
+  "subtitle": "感谢到来喵",
+  "hue": 250,
+  "title": "HYX_HYD的个人博客",
+  "avatar": "/images/demo-avatar.png",
+  "heroTitle": "记录所学，也记录创造。"
 }
