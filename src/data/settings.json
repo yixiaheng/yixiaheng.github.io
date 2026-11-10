@@ -3,12 +3,7 @@
   "github": "https://github.com/yixiaheng",
   "music": {
     "enabled": true,
-    "tracks": [
-      {
-        "src": "/images/uploads/.mp3",
-        "title": "背景音乐"
-      }
-    ]
+    "tracks": []
   },
   "bio": "本人计算机专业大二在读; \nUnity新人开发者;\n不怎么喜欢分享知识的小白;\n以后不想当哑巴的程序员；",
   "name": "HYX_HYD",
