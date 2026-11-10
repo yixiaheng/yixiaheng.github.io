@@ -78,8 +78,14 @@
               "widget": "object",
               "fields": [
                 { "name": "enabled", "label": "显示音乐按钮", "widget": "boolean", "default": true },
-                { "name": "src", "label": "音乐文件（MP3）", "widget": "file", "required": false },
-                { "name": "title", "label": "音乐名称", "widget": "string", "default": "背景音乐" }
+                {
+                  "name": "tracks", "label": "音乐列表（最多 4 首）", "widget": "list", "minimize_collapsed": true,
+                  "summary": "{{fields.title}}", "max": 4, "required": false,
+                  "fields": [
+                    { "name": "title", "label": "音乐名称", "widget": "string", "default": "背景音乐" },
+                    { "name": "src", "label": "音乐文件（MP3）", "widget": "file", "media_library": { "config": { "multiple": false } } }
+                  ]
+                }
               ]
             },
             {

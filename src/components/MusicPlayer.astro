@@ -1,57 +1,52 @@
 ---
 import { homeConfig } from '../config';
-const music = homeConfig.music;
+
+const music = homeConfig.music as { enabled?: boolean; src?: string; title?: string; tracks?: Array<{ src?: string; title?: string }> };
+const tracks = (music?.tracks?.length ? music.tracks : [{ src: music?.src, title: music?.title }])
+  .filter(track => track?.src).slice(0, 4)
+  .map((track, index) => ({ src: track.src!, title: track.title?.trim() || `音乐 ${index + 1}` }));
 ---
-{music?.enabled && <div id="music-player">
-  <button id="music-toggle" type="button" class="btn-regular rounded-full" aria-label={music.src ? `播放：${music.title}` : '暂未设置音乐'} title={music.src ? `播放：${music.title}` : '暂未设置音乐'} aria-pressed="false" disabled={!music.src}>
-    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M14 7v8a2 2 0 1 1-2-2h2M14 7l3 1"/></svg>
+{music?.enabled && <div id="music-player" data-track-count={tracks.length}>
+  <div id="music-track-menu" aria-label="选择背景音乐">
+    {tracks.map((track, index) => <button type="button" class="music-track" style={`--track-index:${index}`} data-src={track.src} data-title={track.title} aria-label={`选择音乐：${track.title}`} title={track.title}><span>{index + 1}</span></button>)}
+  </div>
+  <button id="music-toggle" type="button" class="rounded-full" aria-label={tracks.length ? `播放：${tracks[0].title}` : '暂未设置音乐'} title={tracks.length ? `播放：${tracks[0].title}` : '暂未设置音乐'} aria-pressed="false" disabled={!tracks.length}>
+    <svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.2"/><path d="M14 7v4.2"/></svg>
     <span class="music-pause" aria-hidden="true">Ⅱ</span>
   </button>
   <span id="music-status" class="sr-only" role="status"></span>
-  {music.src && <audio id="background-music" src={music.src} preload="none" loop data-title={music.title} />}
+  {tracks.length > 0 && <audio id="background-music" src={tracks[0].src} preload="none" loop data-title={tracks[0].title} />}
 </div>}
+
 <style is:global>
-  #music-player { position: fixed; right: 1.5rem; bottom: 5.5rem; z-index: 60; }
-  #music-toggle { width: 2.75rem; height: 2.75rem; display: grid; place-items: center; position: relative; box-shadow: 0 3px 18px rgb(0 0 0 / 10%); }
-  #music-toggle:disabled { opacity: .5; cursor: default; }
-  #music-toggle .music-pause { display: none; position: absolute; font-size: 1rem; }
-  #music-toggle[aria-pressed="true"] svg { animation: music-spin 8s linear infinite; }
-  #music-toggle[aria-pressed="true"]:hover svg { opacity: .25; }
-  #music-toggle[aria-pressed="true"]:hover .music-pause { display: block; }
-  html[data-hero-top] #music-player { visibility: hidden; pointer-events: none; }
-  html[data-home-hero] #music-player { opacity: var(--hero-nav-opacity, 0); }
-  @keyframes music-spin { to { transform: rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { #music-toggle svg { animation: none !important; } }
+  #music-player { position:fixed; right:1.35rem; bottom:6.35rem; z-index:60; width:3.25rem; height:3.25rem; transition:opacity .35s ease,transform .35s ease; }
+  #music-toggle { position:absolute; inset:0; z-index:3; width:3.25rem; height:3.25rem; display:grid; place-items:center; color:rgb(255 255 255 / 55%); background:rgb(28 30 38 / 72%); border:1px solid rgb(255 255 255 / 16%); box-shadow:0 8px 24px rgb(0 0 0 / 22%); backdrop-filter:blur(12px); filter:grayscale(.8) brightness(.75); transition:color .3s ease,background .3s ease,filter .3s ease,box-shadow .3s ease,transform .3s ease; }
+  #music-toggle:not(:disabled):hover { transform:scale(1.06); } #music-toggle:disabled { opacity:.45; cursor:default; }
+  #music-toggle .music-pause { display:none; position:absolute; font-size:.9rem; font-weight:700; }
+  #music-toggle[aria-pressed="true"] { color:white; background:color-mix(in srgb,var(--primary) 82%,rgb(25 28 38)); filter:none; box-shadow:0 0 0 4px color-mix(in srgb,var(--primary) 18%,transparent),0 8px 30px color-mix(in srgb,var(--primary) 45%,transparent); }
+  #music-toggle[aria-pressed="true"] svg { animation:music-spin 7s linear infinite; } #music-toggle[aria-pressed="true"]:hover svg { opacity:.22; } #music-toggle[aria-pressed="true"]:hover .music-pause { display:block; }
+  #music-track-menu { position:absolute; inset:0; z-index:1; pointer-events:none; }
+  .music-track { --track-angle:calc(-8deg - var(--track-index) * 28deg); position:absolute; left:.25rem; top:.25rem; width:2.75rem; height:2.75rem; border-radius:999px; display:grid; place-items:center; color:rgb(255 255 255 / 82%); font-size:.78rem; font-weight:700; background:rgb(34 37 48 / 82%); border:1px solid rgb(255 255 255 / 18%); box-shadow:0 7px 20px rgb(0 0 0 / 20%); backdrop-filter:blur(10px); opacity:0; transform:rotate(55deg) scale(.35); transition:transform .38s cubic-bezier(.2,.85,.2,1),opacity .2s ease,background .25s ease,color .25s ease; transition-delay:calc(var(--track-index) * 35ms); }
+  #music-player:is(:hover,:focus-within,[data-menu-open="true"]) .music-track { opacity:1; pointer-events:auto; transform:rotate(var(--track-angle)) translateY(-4.25rem) rotate(calc(var(--track-angle) * -1)) scale(1); }
+  .music-track:is(:hover,:focus-visible),.music-track[aria-current="true"] { color:white; background:color-mix(in srgb,var(--primary) 78%,rgb(30 33 44)); } .music-track[aria-current="true"] { box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 22%,transparent),0 7px 20px rgb(0 0 0 / 22%); }
+  html[data-hero-top] #music-player { visibility:hidden; pointer-events:none; } html[data-home-hero] #music-player { opacity:var(--hero-nav-opacity,0); }
+  @keyframes music-spin { to { transform:rotate(360deg); } }
+  @media (max-width:640px) { #music-player { right:1rem; bottom:5.75rem; transform:scale(.92); transform-origin:bottom right; } .music-track { --track-angle:calc(-6deg - var(--track-index) * 27deg); } }
+  @media (prefers-reduced-motion:reduce) { #music-toggle svg { animation:none!important; } .music-track { transition-duration:.01ms!important; } }
 </style>
+
 <script>
-  const audio = document.querySelector<HTMLAudioElement>('#background-music');
-  const button = document.querySelector<HTMLButtonElement>('#music-toggle');
-  const status = document.getElementById('music-status');
-  if (audio && button && !button.dataset.bound) {
-    button.dataset.bound = 'true';
-    audio.volume = .5;
-    const update = () => {
-      const playing = !audio.paused;
-      button.setAttribute('aria-pressed', String(playing));
-      button.title = `${playing ? '暂停' : '播放'}：${audio.dataset.title || '背景音乐'}`;
-      button.setAttribute('aria-label', button.title);
-    };
-    const failure = () => {
-      update();
-      const message = '音乐暂时无法播放，请检查文件或稍后重试。';
-      if (status) status.textContent = message;
-      button.title = message;
-      button.setAttribute('aria-label', message);
-    };
-    button.addEventListener('click', async () => {
-      if (status) status.textContent = '';
-      if (!audio.paused) { audio.pause(); return; }
-      button.disabled = true;
-      try { await audio.play(); } catch { failure(); }
-      finally { button.disabled = false; }
-    });
-    audio.addEventListener('play', update);
-    audio.addEventListener('pause', update);
-    audio.addEventListener('error', failure);
-  }
+  const setupMusicPlayer = () => {
+    const player=document.querySelector<HTMLElement>('#music-player'); const audio=player?.querySelector<HTMLAudioElement>('#background-music'); const button=player?.querySelector<HTMLButtonElement>('#music-toggle'); const status=player?.querySelector<HTMLElement>('#music-status'); const trackButtons=[...(player?.querySelectorAll<HTMLButtonElement>('.music-track')??[])];
+    if(!player||!audio||!button||button.dataset.bound)return; button.dataset.bound='true'; audio.volume=.5;
+    const currentTitle=()=>audio.dataset.title||'背景音乐';
+    const update=()=>{ const playing=!audio.paused; button.setAttribute('aria-pressed',String(playing)); button.title=`${playing?'暂停':'播放'}：${currentTitle()}`; button.setAttribute('aria-label',button.title); trackButtons.forEach(track=>track.setAttribute('aria-current',String(track.dataset.src===audio.getAttribute('src')))); };
+    const failure=()=>{ update(); const message='音乐暂时无法播放，请检查文件或稍后重试。'; if(status)status.textContent=message; button.title=message; button.setAttribute('aria-label',message); };
+    const play=async()=>{ button.disabled=true; try{await audio.play();}catch{failure();}finally{button.disabled=false;} };
+    button.addEventListener('click',async()=>{ if(status)status.textContent=''; if(!audio.paused){audio.pause();return;} await play(); });
+    trackButtons.forEach(track=>track.addEventListener('click',async()=>{ const src=track.dataset.src;if(!src)return; if(audio.getAttribute('src')!==src){audio.src=src;audio.dataset.title=track.dataset.title||'背景音乐';audio.load();} player.dataset.menuOpen='false';if(status)status.textContent=`已选择：${currentTitle()}`;await play();update(); }));
+    player.addEventListener('pointerdown',event=>{if(event.pointerType!=='mouse'&&(event.target as Element).closest('#music-toggle'))player.dataset.menuOpen=player.dataset.menuOpen==='true'?'false':'true';});
+    document.addEventListener('pointerdown',event=>{if(!player.contains(event.target as Node))player.dataset.menuOpen='false';});
+    audio.addEventListener('play',update);audio.addEventListener('pause',update);audio.addEventListener('error',failure);update();
+  }; setupMusicPlayer();
 </script>
