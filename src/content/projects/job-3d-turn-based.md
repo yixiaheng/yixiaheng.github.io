@@ -12,7 +12,7 @@ featured: true
 draft: false
 image: /images/uploads/img_20260831_204949.jpg
 tags:
-  - "#unity"
+  - unity
 repository: https://github.com/yixiaheng/Job-hunting-project.git
 ---
 Still in development
