@@ -12,7 +12,9 @@ description: 本文以一个 Unity 游戏项目为例，介绍项目中 UI 框�
   UI 框架方案。
 image: /images/uploads/camera_1040g3k831sqk0nbelm005oe6u4541s3g60moa6o.jpg
 tags:
-  - "#unity#UI"
+  - Unity
+  - UI
+  - 框架
 category: 项目随笔
 projects:
   - job-3d-turn-based
